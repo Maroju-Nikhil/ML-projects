@@ -3,6 +3,7 @@ from flask import request
 import pandas as pd
 import numpy as np
 import pickle
+from gevent.pywsgi import WSGIServer
 
 car = pd.read_csv('cleaned_car.csv')
 app = Flask(__name__)
@@ -42,4 +43,5 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    http_server = WSGIServer(('', 5000), app)
+    http_server.serve_forever()
